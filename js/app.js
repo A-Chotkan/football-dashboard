@@ -1,87 +1,68 @@
 const standings = document.getElementById("standings");
 const leagueSelect = document.getElementById("leagueSelect");
 
-function getLeagueName() {
+function getCompetitionCode() {
 
     switch (leagueSelect.value) {
 
         case "Eredivisie":
-            return "Dutch Eredivisie";
+            return "2003";
 
         case "Premier League":
-            return "English Premier League";
+            return "2021";
 
         case "La Liga":
-            return "Spanish La Liga";
+            return "2014";
+
+        case "Bundesliga":
+            return "2002";
+
+        case "Serie A":
+            return "2019";
 
         default:
-            return "Dutch Eredivisie";
+            return "2003";
     }
-
 }
 
-async function getTeams() {
+async function loadStandings() {
 
     try {
-
-        standings.innerHTML = `
-            <tr>
-                <td colspan="7" class="text-center">
-                    Teams laden...
-                </td>
-            </tr>
-        `;
-
-        const league = getLeagueName();
-
+        const competition = getCompetitionCode();
         const response = await fetch(
-            `https://www.thesportsdb.com/api/v1/json/3/search_all_teams.php?l=${encodeURIComponent(league)}`
+            `api/standings.php?competition=${competition}`
         );
 
         const data = await response.json();
-        console.log(data.teams.length);
+        const teams = data.standings[0].table;
         standings.innerHTML = "";
-
-        if (!data.teams) {
-
-            standings.innerHTML = `
-                <tr>
-                    <td colspan="7" class="text-center">
-                        Geen teams gevonden.
-                    </td>
-                </tr>
-            `;
-
-            return;
-        }
-
-        data.teams.forEach((team, index) => {
+        teams.forEach(team => {
 
             standings.innerHTML += `
                 <tr>
-                    <td>${index + 1}</td>
+                    <td>${team.position}</td>
 
                     <td>
                         <div class="d-flex align-items-center gap-2">
 
                             <img
-                                src="${team.strBadge}"
-                                alt="${team.strTeam}"
-                                width="35"
-                                height="35"
+                                src="${team.team.crest}"
+                                alt="${team.team.name}"
+                                width="30"
+                                height="30"
                                 style="object-fit:contain;"
                             >
 
-                            <span>${team.strTeam}</span>
+                            ${team.team.name}
 
                         </div>
                     </td>
 
-                    <td>-</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>-</td>
+                    <td>${team.playedGames}</td>
+                    <td>${team.won}</td>
+                    <td>${team.draw}</td>
+                    <td>${team.lost}</td>
+                    <td><strong>${team.points}</strong></td>
                 </tr>
             `;
 
@@ -94,17 +75,15 @@ async function getTeams() {
         standings.innerHTML = `
             <tr>
                 <td colspan="7" class="text-center text-danger">
-                    Er is iets fout gegaan.
+                    Er is iets fout gegaan bij het laden van de standen.
                 </td>
             </tr>
         `;
-
     }
-
 }
 
 leagueSelect.addEventListener("change", () => {
-    getTeams();
+    loadStandings();
 });
 
-getTeams();
+loadStandings();
