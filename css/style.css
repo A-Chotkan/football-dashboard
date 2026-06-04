@@ -21,19 +21,103 @@ footer{
     font-size:0.9rem;
 }
 
-/* Css for the team info and logo */
-.team-info{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.team-info img{
-    width:30px;
-    height:30px;
-    object-fit:contain;
-}
-
 table img{
     border-radius:50%;
+}
+
+.table{
+    margin-bottom:0;
+}
+
+.table tbody tr{
+    vertical-align:middle;
+}
+
+.position-cell{
+    width:75px;
+}
+
+.position-wrapper{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.position-bar{
+    width:4px;
+    height:30px;
+    border-radius:10px;
+    display:inline-block;
+    background:transparent;
+}
+
+/* Champions League */
+.cl{
+    background:#22c55e;
+}
+
+/* Europa League */
+.el{
+    background:#2563eb;
+}
+
+/* Conference League */
+.col{
+    background:#06b6d4;
+}
+
+/* Degradatie */
+.rel{
+    background:#ef4444;
+}
+
+.badge{
+    padding:8px 12px;
+}
+
+.position-cell{
+    width:75px;
+}
+
+.position-wrapper{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.position-bar{
+    width:4px;
+    height:28px;
+    border-radius:10px;
+    display:inline-block;
+}
+
+/* Champions League */
+.ucl{
+    background:#22c55e;
+}
+
+/* Champions League kwalificatie */
+.ucl-qual{
+    background:#16a34a;
+}
+
+/* Europa League */
+.uel{
+    background:#2563eb;
+}
+
+/* Conference League */
+.uecl{
+    background:#f97316;
+}
+
+/* Nacompetitie */
+.playoff{
+    background:#eab308;
+}
+
+/* Degradatie */
+.relegation{
+    background:#ef4444;
 }
