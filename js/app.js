@@ -63,6 +63,9 @@ async function loadStandings() {
                     <td>${team.draw}</td>
                     <td>${team.lost}</td>
                     <td><strong>${team.points}</strong></td>
+                    <td>${team.goalsFor}</td>
+                    <td>${team.goalsAgainst}</td>
+                    <td>${team.goalDifference}</td>
                 </tr>
             `;
 
