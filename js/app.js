@@ -1,36 +1,110 @@
 const standings = document.getElementById("standings");
-const API_KEY = "3fd1a403a8eb487a8c191e32c413d5fe";
-async function loadStandings() {
+const leagueSelect = document.getElementById("leagueSelect");
+
+function getLeagueName() {
+
+    switch (leagueSelect.value) {
+
+        case "Eredivisie":
+            return "Dutch Eredivisie";
+
+        case "Premier League":
+            return "English Premier League";
+
+        case "La Liga":
+            return "Spanish La Liga";
+
+        default:
+            return "Dutch Eredivisie";
+    }
+
+}
+
+async function getTeams() {
+
     try {
+
+        standings.innerHTML = `
+            <tr>
+                <td colspan="7" class="text-center">
+                    Teams laden...
+                </td>
+            </tr>
+        `;
+
+        const league = getLeagueName();
+
         const response = await fetch(
-            "https://api.football-data.org/v4/competitions/DED/standings",
-            {
-                headers: {
-                    "X-Auth-Token": API_KEY
-                }
-            }
+            `https://www.thesportsdb.com/api/v1/json/3/search_all_teams.php?l=${encodeURIComponent(league)}`
         );
 
         const data = await response.json();
-        const teams = data.standings[0].table;
+        console.log(data.teams.length);
         standings.innerHTML = "";
-        teams.forEach(team => {
-            standings.innerHTML += `
+
+        if (!data.teams) {
+
+            standings.innerHTML = `
                 <tr>
-                    <td>${team.position}</td>
-                    <td>${team.team.name}</td>
-                    <td>${team.playedGames}</td>
-                    <td>${team.won}</td>
-                    <td>${team.draw}</td>
-                    <td>${team.lost}</td>
-                    <td><strong>${team.points}</strong></td>
+                    <td colspan="7" class="text-center">
+                        Geen teams gevonden.
+                    </td>
                 </tr>
             `;
+
+            return;
+        }
+
+        data.teams.forEach((team, index) => {
+
+            standings.innerHTML += `
+                <tr>
+                    <td>${index + 1}</td>
+
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+
+                            <img
+                                src="${team.strBadge}"
+                                alt="${team.strTeam}"
+                                width="35"
+                                height="35"
+                                style="object-fit:contain;"
+                            >
+
+                            <span>${team.strTeam}</span>
+
+                        </div>
+                    </td>
+
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+            `;
+
         });
 
-    } catch(error) {
+    } catch (error) {
+
         console.error(error);
+
+        standings.innerHTML = `
+            <tr>
+                <td colspan="7" class="text-center text-danger">
+                    Er is iets fout gegaan.
+                </td>
+            </tr>
+        `;
+
     }
+
 }
 
-loadStandings();
+leagueSelect.addEventListener("change", () => {
+    getTeams();
+});
+
+getTeams();

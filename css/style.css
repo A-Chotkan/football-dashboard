@@ -33,3 +33,7 @@ footer{
     height:30px;
     object-fit:contain;
 }
+
+table img{
+    border-radius:50%;
+}
